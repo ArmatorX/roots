@@ -46,9 +46,23 @@ namespace StarterAssets
         [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
         public float FallTimeout = 0.15f;
 
+        [Tooltip("Time for the player to run out of stamina")]
+        public float MaxStamina = 5f;
+
+        [Tooltip("Time for the player recover from tired")]
+        public float MinStaminaRest = 3f;
+
         [Header("Player Grounded")]
         [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
         public bool Grounded = true;
+
+        [Header("Player Tired")]
+        [Tooltip("If the character has run out of stamina or not")]
+        public bool Tired = false;
+
+        [Header("Player Not Rested")]
+        [Tooltip("If the character has run out of stamina and hasn't rested enough but can move")]
+        public bool NotRested = false;
 
         [Tooltip("Useful for rough ground")]
         public float GroundedOffset = -0.14f;
@@ -86,6 +100,7 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        private float _currentStamina;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -150,6 +165,9 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+
+            // reset stamina
+            _currentStamina = MaxStamina;
         }
 
         private void Update()
@@ -214,13 +232,19 @@ namespace StarterAssets
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            float targetSpeed = _input.sprint && !NotRested ? SprintSpeed : MoveSpeed;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
             // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is no input, set the target speed to 0
-            if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+            bool isIdle = _input.move == Vector2.zero;
+            if (isIdle) targetSpeed = 0.0f;
+
+            // check for stamina
+            StaminaCheck(_input.sprint, !isIdle);
+
+            if (Tired) targetSpeed = 0;
 
             // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -253,7 +277,7 @@ namespace StarterAssets
 
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
-            if (_input.move != Vector2.zero)
+            if (_input.move != Vector2.zero && !Tired)
             {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                                   _mainCamera.transform.eulerAngles.y;
@@ -276,6 +300,42 @@ namespace StarterAssets
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+            }
+        }
+
+        private void StaminaCheck(bool isSprinting, bool isWalking)
+        {
+            // player run out of stamina
+            if (Tired)
+            {
+                _currentStamina += Time.deltaTime;
+
+                if (_currentStamina >= MinStaminaRest) Tired = false;
+            } else if (NotRested)
+            {
+                if (!isWalking && _currentStamina <= MaxStamina)
+                {
+                    _currentStamina += Time.deltaTime;
+                    if (_currentStamina >= MaxStamina) NotRested = false;
+                }
+            } else
+            {
+                if (isSprinting)
+                {
+                    _currentStamina -= Time.deltaTime;
+
+                    if (_currentStamina <= 0)
+                    {
+                        Tired = true;
+                        NotRested = true;
+                    }
+                } else if (isWalking)
+                {
+                    if (_currentStamina <= MaxStamina) _currentStamina += Time.deltaTime * 0.45f;
+                } else
+                {
+                    if (_currentStamina <= MaxStamina) _currentStamina += Time.deltaTime * 1.5f;
+                }
             }
         }
 
