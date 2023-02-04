@@ -50,7 +50,7 @@ namespace StarterAssets
         public float MaxStamina = 5f;
 
         [Tooltip("Time for the player recover from tired")]
-        public float MinStaminaRest = 3f;
+        public float MinStaminaRest = 12f;
 
         [Header("Player Grounded")]
         [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
@@ -59,10 +59,6 @@ namespace StarterAssets
         [Header("Player Tired")]
         [Tooltip("If the character has run out of stamina or not")]
         public bool Tired = false;
-
-        [Header("Player Not Rested")]
-        [Tooltip("If the character has run out of stamina and hasn't rested enough but can move")]
-        public bool NotRested = false;
 
         [Tooltip("Useful for rough ground")]
         public float GroundedOffset = -0.14f;
@@ -111,6 +107,7 @@ namespace StarterAssets
         private int _animIDGrounded;
         private int _animIDJump;
         private int _animIDFreeFall;
+        private int _animIDTired;
         private int _animIDMotionSpeed;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
@@ -190,6 +187,7 @@ namespace StarterAssets
             _animIDGrounded = Animator.StringToHash("Grounded");
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
+            _animIDTired = Animator.StringToHash("Tired");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
         }
 
@@ -232,7 +230,7 @@ namespace StarterAssets
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = _input.sprint && !NotRested ? SprintSpeed : MoveSpeed;
+            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -310,15 +308,12 @@ namespace StarterAssets
             {
                 _currentStamina += Time.deltaTime;
 
-                if (_currentStamina >= MinStaminaRest) Tired = false;
-            } else if (NotRested)
-            {
-                if (!isWalking && _currentStamina <= MaxStamina)
+                if (_currentStamina >= MinStaminaRest)
                 {
-                    _currentStamina += Time.deltaTime;
-                    if (_currentStamina >= MaxStamina) NotRested = false;
+                    _currentStamina = MaxStamina;
+                    Tired = false;
                 }
-            } else
+            }  else
             {
                 if (isSprinting)
                 {
@@ -327,7 +322,6 @@ namespace StarterAssets
                     if (_currentStamina <= 0)
                     {
                         Tired = true;
-                        NotRested = true;
                     }
                 } else if (isWalking)
                 {
@@ -337,6 +331,8 @@ namespace StarterAssets
                     if (_currentStamina <= MaxStamina) _currentStamina += Time.deltaTime * 1.5f;
                 }
             }
+
+            _animator.SetBool(_animIDTired, Tired);
         }
 
         private void JumpAndGravity()
