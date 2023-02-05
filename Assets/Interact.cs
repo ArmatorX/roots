@@ -11,27 +11,39 @@ public class Interact : MonoBehaviour
     private GameObject axe;
     private StarterAssetsInputs _input;
     private bool hasGathered = false;
-    private bool haveAxe = false;
+    private bool haveAxe = true;
+    private bool gameOver = false;
 
     private void Start()
     {
         _input = GetComponent<StarterAssetsInputs>();
+        gameObject.GetComponent<ThirdPersonController>().ActivateAxe();
     }
     private void Update()
     {
-        if (pressE.activeSelf)
+        if (!gameOver)
         {
-            if (_input.interact)
+            if (pressE.activeSelf)
             {
-                pressE.SetActive(false);
-                StartCoroutine(removeAxe(axe));
-                hasGathered = true;
+                if (_input.interact)
+                {
+                    pressE.SetActive(false);
+                    StartCoroutine(removeAxe(axe));
+                    hasGathered = true;
+                }
+                gameObject.GetComponent<ThirdPersonController>().Gather();
             }
-            gameObject.GetComponent<ThirdPersonController>().Gather();
-        } else if (hasGathered) 
-        { 
-            gameObject.GetComponent<ThirdPersonController>().Gather();
-        }
+            else if (hasGathered)
+            {
+                gameObject.GetComponent<ThirdPersonController>().Gather();
+            }
+
+            if (pressLeftClick.activeSelf && _input.attack)
+            {
+                gameObject.GetComponent<ThirdPersonController>().StartDestroyRoot();
+                gameOver = true;
+            }
+        } 
     }
 
     IEnumerator removeAxe(GameObject axe)

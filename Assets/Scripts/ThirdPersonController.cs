@@ -27,6 +27,10 @@ namespace StarterAssets
         [Tooltip("The main antagonist")]
         public GameObject ChobiGameObject;
 
+        [Header("Shader")]
+        [Tooltip("Cool material")]
+        public Material Shader;
+
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
 
@@ -109,6 +113,7 @@ namespace StarterAssets
 
         // timeout deltatime
         private float _fallTimeoutDelta;
+        private float time;
 
         // animation IDs
         private int _animIDSpeed;
@@ -132,6 +137,7 @@ namespace StarterAssets
 
         private bool _hasAnimator;
         private bool _isGameOver = false;
+        private bool _isDestroyRoot = false;
 
         private bool IsCurrentDeviceMouse
         {
@@ -179,19 +185,57 @@ namespace StarterAssets
 
         private void Update()
         {
+            if (_isDestroyRoot)
+            {
+                DestroyRoot();
+            }
+
+            if (_isGameOver)
+                return;
+
             _hasAnimator = TryGetComponent(out _animator);
 
-            if (!_isGameOver)
+            Attack();
+            GravityPhisycs();
+            GroundedCheck();
+            Move();
+        }
+
+        public void DestroyRoot()
+        {
+            var prevHeight = transform.position.y + 0.5f;
+            var currHeight = transform.position.y + 0.5f;
+            prevHeight = currHeight;
+            var t = time * Mathf.PI * 0.1f;
+            currHeight = transform.position.y;
+            currHeight += Mathf.Cos(t) * (5f);
+            Shader.SetFloat("_CutoffHeight", currHeight);
+            Shader.SetFloat("_NoiseStrength", 0.25f);
+            time += Time.deltaTime;
+            if (prevHeight >= currHeight) return;
+        }
+
+        public void ChangeRender()
+        {
+            //GameObject[] objs;
+            Renderer[] objs;
+
+            //objs = FindObjectsOfType<GameObject>();
+            objs = GetComponentsInChildren<Renderer>();
+
+            foreach (Renderer obj in objs)
             {
-                Attack();
-                GravityPhisycs();
-                GroundedCheck();
-                Move();
-            } else
-            {
-                //RotateCamera();
+                obj.material = Shader;
             }
         }
+
+        public void StartDestroyRoot()
+        {
+            _isDestroyRoot = true;
+            _speed = 0;
+            time = 0f;
+            ChangeRender();
+        } 
 
         public void GameOver() 
         {

@@ -3025,6 +3025,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 2
   AxeGameObject: {fileID: 2820632794879808976}
+  ChobiGameObject: {fileID: 0}
+  Shader: {fileID: 2100000, guid: 68e50b8d2f1228b4f8794a386ebc3302, type: 2}
   SprintSpeed: 5.335
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
