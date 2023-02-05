@@ -146,7 +146,7 @@ namespace StarterAssets
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -182,7 +182,7 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            AssignAnimationIDs();
+            CameraRotation();
         }
 
         private void AssignAnimationIDs()
@@ -246,7 +246,10 @@ namespace StarterAssets
             // check for stamina
             StaminaCheck(_input.sprint, !isIdle);
 
-            if (Tired) targetSpeed = 0;
+            // check if attacking
+            bool isAttacking = _animator.GetCurrentAnimatorStateInfo(0).IsName("UseAxe");
+
+            if (Tired || isAttacking) targetSpeed = 0;
 
             // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
