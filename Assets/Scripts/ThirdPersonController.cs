@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -124,6 +125,8 @@ namespace StarterAssets
         private int _animIDAttack;
         private int _animIDGather;
         private int _animIDDead;
+        private int _animIDChobiAttack;
+        private int _animIDChobiEnd;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -239,13 +242,20 @@ namespace StarterAssets
 
         public void GameOver() 
         {
+            ChobiGameObject.GetComponent<movement>().stopMovement = true;
+            ChobiGameObject.GetComponent<NavMeshAgent>().speed = 0;
             _isGameOver = true;
             _speed = 0;
-            _animator.SetBool(_animIDDead, true);
+            ChobiGameObject.GetComponent<Animator>().SetBool(_animIDChobiAttack, true);
+            StartCoroutine(waitForDead());
             // Cinemachine will follow this target
-            
         }
-
+        IEnumerator waitForDead()
+        {
+            yield return new WaitForSeconds(0.8f);
+            ChobiGameObject.GetComponent<Animator>().SetBool(_animIDChobiEnd, true);
+            _animator.SetBool(_animIDDead, true);
+        }
         private void RotateCamera()
         {
             Vector3 targetDirection = ChobiGameObject.transform.position - transform.position;
@@ -288,6 +298,8 @@ namespace StarterAssets
             _animIDAttack = Animator.StringToHash("Attack");
             _animIDGather = Animator.StringToHash("Gathering");
             _animIDDead = Animator.StringToHash("Dead");
+            _animIDChobiAttack = Animator.StringToHash("GameOver");
+            _animIDChobiEnd = Animator.StringToHash("End");
         }
 
         private void GroundedCheck()
