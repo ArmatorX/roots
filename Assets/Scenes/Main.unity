@@ -10465,6 +10465,7 @@ MonoBehaviour:
   warningThemeLoop: {fileID: 8300000, guid: 3cb339558c3fdec4ebf24d628db4d951, type: 3}
   audioSource: {fileID: 157628296}
   upsetTime: 0
+  stopMovement: 0
 --- !u!195 &1773501098
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10479,7 +10480,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
