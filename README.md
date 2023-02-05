@@ -2,6 +2,8 @@
 
 A game made for GGJ 2023.
 
+Available on [itch.io](https://armatorx.itch.io/root-of-all-evil).
+
 # Description
 
 A short horror game where a strange creature that lives within the depths of the woods chases you. Be careful with the roots. People say that's how it knows where you are. 
