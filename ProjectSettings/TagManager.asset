@@ -6,6 +6,9 @@ TagManager:
   tags:
   - CinemachineTarget
   - spheres
+  - chobi
+  - axe
+  - interact
   layers:
   - Default
   - TransparentFX

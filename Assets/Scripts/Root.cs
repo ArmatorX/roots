@@ -8,7 +8,7 @@ public class Root : MonoBehaviour
     [SerializeField] private float noiseStrength = 0.25f;
     [SerializeField] private float objectHeight = 1.0f;
     private bool _wasTriggered = false;
-
+    public GameObject chobi;
     private Material material;
 
     private void Awake()
@@ -60,6 +60,7 @@ public class Root : MonoBehaviour
             if (prevHeight < currHeight) break;
             else yield return null;
         }
+        GameObject.FindGameObjectWithTag("chobi").GetComponent<movement>().followingCharacterForRoot = true;
         Destroy(gameObject);
     }
 

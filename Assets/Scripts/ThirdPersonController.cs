@@ -108,6 +108,7 @@ namespace StarterAssets
         private int _animIDTired;
         private int _animIDMotionSpeed;
         private int _animIDAttack;
+        private int _animIDGather;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -180,6 +181,11 @@ namespace StarterAssets
             _animator.SetBool(_animIDAttack, _input.attack);
         }
 
+        public void Gather()
+        {
+            _animator.SetBool(_animIDGather, _input.interact);
+        }
+
         private void LateUpdate()
         {
             AssignAnimationIDs();
@@ -193,6 +199,7 @@ namespace StarterAssets
             _animIDTired = Animator.StringToHash("Tired");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
             _animIDAttack = Animator.StringToHash("Attack");
+            _animIDGather = Animator.StringToHash("Gathering");
         }
 
         private void GroundedCheck()
