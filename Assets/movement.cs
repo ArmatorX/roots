@@ -93,6 +93,18 @@ public class movement : MonoBehaviour
             characterTransform.gameObject.GetComponent<ThirdPersonController>().GameOver();
             GetComponent<Animator>().SetBool("GameOver", true);
         }
+        else if (other.tag == "cabin")
+        {
+            followingCharacter = false;
+            followingCharacterForRoot = false;
+            foreach (Transform pathPosition in movePositionTransform)
+            {
+                if (Vector3.Distance(pathPosition.position, characterTransform.position) > 70)
+                {
+                    chobiTransform.position = pathPosition.position;
+                }
+            }
+        }
         if (pathCounter == movePositionTransform.Length)
         {
             pathCounter = 0;
