@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.19522133, g: 0.23194559, b: 0.26705626, a: 1}
+  m_IndirectSpecularColor: {r: 0.19523895, g: 0.23198636, b: 0.2671622, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4074,7 +4074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressE: {fileID: 1670850927}
-  pressLeftClick: {fileID: 1981534023}
+  pressLeftClick: {fileID: 0}
 --- !u!1001 &689189289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4799,6 +4799,16 @@ PrefabInstance:
         type: 3}
       propertyPath: SprintSpeed
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544,
+        type: 3}
+      propertyPath: ChobiGameObject
+      value: 
+      objectReference: {fileID: 1773501094}
+    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544,
+        type: 3}
+      propertyPath: LockCameraPosition
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5568205580944261277, guid: 64dce48905ffd9b4293e595fa6941544,
         type: 3}
@@ -11719,12 +11729,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5799852362ddd8e4d9320abfafa4f365, type: 3}
---- !u!1 &1981534023 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8086377771136383793, guid: 5799852362ddd8e4d9320abfafa4f365,
-    type: 3}
-  m_PrefabInstance: {fileID: 1981534022}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1984345928
 PrefabInstance:
   m_ObjectHideFlags: 0

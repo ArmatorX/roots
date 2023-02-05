@@ -19,7 +19,7 @@ public class Interact : MonoBehaviour
     }
     private void Update()
     {
-        if (pressE.active)
+        if (pressE.activeSelf)
         {
             if (_input.interact)
             {

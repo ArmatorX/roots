@@ -1,3 +1,4 @@
+using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -86,7 +87,7 @@ public class movement : MonoBehaviour
             pathCounter++;
         } else if (other.tag == "Player")
         {
-            // this is die
+            characterTransform.gameObject.GetComponent<ThirdPersonController>().GameOver();
         }
         if (pathCounter == movePositionTransform.Length)
         {

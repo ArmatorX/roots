@@ -23,6 +23,10 @@ namespace StarterAssets
         [Tooltip("Axe GameObject")]
         public GameObject AxeGameObject;
 
+        [Header("Boss")]
+        [Tooltip("The main antagonist")]
+        public GameObject ChobiGameObject;
+
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
 
@@ -114,6 +118,7 @@ namespace StarterAssets
         private int _animIDMotionSpeed;
         private int _animIDAttack;
         private int _animIDGather;
+        private int _animIDDead;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -176,15 +181,38 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
-            Attack();
-            GravityPhisycs();
-            GroundedCheck();
-            Move();
+            if (!_isGameOver)
+            {
+                Attack();
+                GravityPhisycs();
+                GroundedCheck();
+                Move();
+            } else
+            {
+                RotateCamera();
+            }
+        }
+
+        public void GameOver() 
+        {
+            _isGameOver = true;
+            _speed = 0;
+            _animator.SetBool(_animIDDead, true);
+            // Cinemachine will follow this target
+            
+        }
+
+        private void RotateCamera()
+        {
+            Vector3 targetDirection = ChobiGameObject.transform.position - transform.position;
+            float singleStep = 1f * Time.deltaTime;
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
         }
 
         private void Attack()
         {
-            if (AxeGameObject.active)
+            if (AxeGameObject.activeSelf)
             {
                 _animator.SetBool(_animIDAttack, _input.attack);
             }
@@ -202,7 +230,8 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            CameraRotation();
+            if (!_isGameOver)
+                CameraRotation();
         }
 
         private void AssignAnimationIDs()
@@ -214,6 +243,7 @@ namespace StarterAssets
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
             _animIDAttack = Animator.StringToHash("Attack");
             _animIDGather = Animator.StringToHash("Gathering");
+            _animIDDead = Animator.StringToHash("Dead");
         }
 
         private void GroundedCheck()
