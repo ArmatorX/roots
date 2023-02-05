@@ -189,7 +189,7 @@ namespace StarterAssets
                 Move();
             } else
             {
-                RotateCamera();
+                //RotateCamera();
             }
         }
 

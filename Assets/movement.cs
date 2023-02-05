@@ -28,9 +28,11 @@ public class movement : MonoBehaviour
         if (Vector3.Distance(characterTransform.position, chobiTransform.position) < 50)
         {
             followingCharacter = true;
+            GetComponent<Animator>().SetBool("FollowingPlayer", true);
         } else
         {
             followingCharacter = false;
+            GetComponent<Animator>().SetBool("FollowingPlayer", false);
         }
         if (followingCharacter || followingCharacterForRoot)
         {
@@ -62,6 +64,7 @@ public class movement : MonoBehaviour
         if (followingCharacter || followingCharacterForRoot)
         {
             followingCharacter = false;
+            GetComponent<Animator>().SetBool("FollowingPlayer", false);
             followingCharacterForRoot = false;
             foreach (Transform pathPosition in movePositionTransform)
             {
@@ -88,6 +91,7 @@ public class movement : MonoBehaviour
         } else if (other.tag == "Player")
         {
             characterTransform.gameObject.GetComponent<ThirdPersonController>().GameOver();
+            GetComponent<Animator>().SetBool("GameOver", true);
         }
         if (pathCounter == movePositionTransform.Length)
         {
@@ -98,5 +102,6 @@ public class movement : MonoBehaviour
     public void followForRoot()
     {
         followingCharacterForRoot = true;
+        GetComponent<Animator>().SetBool("FollowingPlayer", true);
     }
 }
