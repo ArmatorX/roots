@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -242,9 +243,16 @@ namespace StarterAssets
             _isGameOver = true;
             _speed = 0;
             _animator.SetBool(_animIDDead, true);
+            StartCoroutine(GoToMainMenu());
             // Cinemachine will follow this target
             
         }
+
+        private IEnumerator GoToMainMenu()
+    {
+        yield return new WaitForSeconds(3.0f);
+        SceneManager.LoadScene("MainMenu");
+    }
 
         private void RotateCamera()
         {
