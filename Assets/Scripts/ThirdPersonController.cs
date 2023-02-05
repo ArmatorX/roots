@@ -126,6 +126,7 @@ namespace StarterAssets
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
+        private bool _isGameOver = false;
 
         private bool IsCurrentDeviceMouse
         {
@@ -183,7 +184,10 @@ namespace StarterAssets
 
         private void Attack()
         {
-            _animator.SetBool(_animIDAttack, _input.attack);
+            if (AxeGameObject.active)
+            {
+                _animator.SetBool(_animIDAttack, _input.attack);
+            }
         }
 
         public void Gather()
@@ -269,8 +273,10 @@ namespace StarterAssets
             // check if gathering
             bool isGathering = _animator.GetCurrentAnimatorStateInfo(0).IsName("Gathering");
 
+            bool lockMove = Tired || isAttacking || isGathering;
 
-            if (Tired || isAttacking || isGathering) targetSpeed = 0;
+
+            if (lockMove) targetSpeed = 0;
 
             // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -303,7 +309,7 @@ namespace StarterAssets
 
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
-            if (_input.move != Vector2.zero && !Tired && !isAttacking && !isGathering)
+            if (_input.move != Vector2.zero && !lockMove)
             {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                                   _mainCamera.transform.eulerAngles.y;

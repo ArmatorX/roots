@@ -84,6 +84,9 @@ public class movement : MonoBehaviour
         if (other.tag == "spheres")
         {
             pathCounter++;
+        } else if (other.tag == "Player")
+        {
+            // this is die
         }
         if (pathCounter == movePositionTransform.Length)
         {
