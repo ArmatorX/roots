@@ -7,10 +7,11 @@ public class movement : MonoBehaviour
 {
     [SerializeField] private Transform[] movePositionTransform;
     public Transform characterTransform;
-    public Transform chobiTransform;
+    private Transform chobiTransform;
     public int pathCounter = 0;
     private NavMeshAgent navMeshAgent;
     public bool followingCharacter = false;
+    public bool followingCharacterForRoot = false;
     public AudioClip mainTheme;
     public AudioClip warningTheme;
     public AudioClip warningThemeLoop;
@@ -30,7 +31,7 @@ public class movement : MonoBehaviour
         {
             followingCharacter = false;
         }
-        if (followingCharacter)
+        if (followingCharacter || followingCharacterForRoot)
         {
             if (mainTheme.name == audioSource.clip.name)
             {
@@ -57,9 +58,10 @@ public class movement : MonoBehaviour
     IEnumerator teleportChobi()
     {
         yield return new WaitForSeconds(25);
-        if (followingCharacter)
+        if (followingCharacter || followingCharacterForRoot)
         {
             followingCharacter = false;
+            followingCharacterForRoot = false;
             foreach (Transform pathPosition in movePositionTransform)
             {
                 if (Vector3.Distance(pathPosition.position, characterTransform.position) > 50)
@@ -87,5 +89,10 @@ public class movement : MonoBehaviour
         {
             pathCounter = 0;
         }
+    }
+
+    public void followForRoot()
+    {
+        followingCharacterForRoot = true;
     }
 }
