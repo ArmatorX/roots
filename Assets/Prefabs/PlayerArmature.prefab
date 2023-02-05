@@ -3091,6 +3091,7 @@ MonoBehaviour:
   look: {x: 0, y: 0}
   attack: 0
   sprint: 0
+  interact: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -6184,6 +6185,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6864919511069406758}
     m_Modifications:
+    - target: {fileID: -4533455539659511873, guid: 6cd1ac9652a50da4485a86492f47c63d,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6542218581709590649, guid: 6cd1ac9652a50da4485a86492f47c63d,
         type: 3}
       propertyPath: m_Enabled
@@ -6193,6 +6199,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ax_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8203073568141072114, guid: 6cd1ac9652a50da4485a86492f47c63d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 8835212951578315848, guid: 6cd1ac9652a50da4485a86492f47c63d,
         type: 3}
