@@ -142,6 +142,8 @@ namespace StarterAssets
         private bool _hasAnimator;
         private bool _isGameOver = false;
         private bool _isDestroyRoot = false;
+        public GameObject youWin;
+        private bool shaderFinish = false;
 
         private bool IsCurrentDeviceMouse
         {
@@ -192,6 +194,7 @@ namespace StarterAssets
             if (_isDestroyRoot)
             {
                 DestroyRoot();
+                return;
             }
 
             if (_isGameOver)
@@ -207,16 +210,23 @@ namespace StarterAssets
 
         public void DestroyRoot()
         {
+            if (shaderFinish) return;
             var prevHeight = transform.position.y + 0.5f;
             var currHeight = transform.position.y + 0.5f;
             prevHeight = currHeight;
             var t = time * Mathf.PI * 0.1f;
             currHeight = transform.position.y;
             currHeight += Mathf.Cos(t) * (5f);
+            if (prevHeight >= currHeight)
+            {
+                shaderFinish = true;
+                youWin.SetActive(true);
+                StartCoroutine(GoToMainMenu());
+                return;
+            }
             Shader.SetFloat("_CutoffHeight", currHeight);
             Shader.SetFloat("_NoiseStrength", 0.25f);
             time += Time.deltaTime;
-            if (prevHeight >= currHeight) return;
         }
 
         public void ChangeRender()
@@ -250,14 +260,15 @@ namespace StarterAssets
             _animator.SetBool(_animIDDead, true);
             ChobiGameObject.GetComponent<Animator>().SetBool(_animIDChobiAttack, true);
             StartCoroutine(waitForDead());
+            StartCoroutine(GoToMainMenu());
             // Cinemachine will follow this target
         }
 
         private IEnumerator GoToMainMenu()
-    {
-        yield return new WaitForSeconds(3.0f);
-        SceneManager.LoadScene("MainMenu");
-    }
+        {
+            yield return new WaitForSeconds(3.0f);
+            SceneManager.LoadScene("MainMenu");
+        }
 
         IEnumerator waitForDead()
         {
@@ -293,7 +304,7 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            if (!_isGameOver)
+            if (!_isGameOver && !_isDestroyRoot)
                 CameraRotation();
         }
 

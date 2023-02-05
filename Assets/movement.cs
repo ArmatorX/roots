@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class movement : MonoBehaviour
 {
-    [SerializeField] private Transform[] movePositionTransform;
+    public Transform[] movePositionTransform;
     public Transform characterTransform;
     private Transform chobiTransform;
     public int pathCounter = 0;
@@ -66,6 +66,11 @@ public class movement : MonoBehaviour
                 navMeshAgent.destination = movePositionTransform[pathCounter].position;
             }
         }
+    }
+
+    public void TpChobiEnd(Vector3 position)
+    {
+        transform.position = position;
     }
 
     IEnumerator teleportChobi()
