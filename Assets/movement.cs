@@ -18,6 +18,8 @@ public class movement : MonoBehaviour
     public AudioClip warningThemeLoop;
     public AudioSource audioSource;
     public float upsetTime = 0f;
+    public bool stopMovement = false;
+
     void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -48,7 +50,10 @@ public class movement : MonoBehaviour
             {
                 playSound(warningThemeLoop, true);
             }
-            navMeshAgent.destination = characterTransform.position;
+            if (!stopMovement)
+            {
+                navMeshAgent.destination = characterTransform.position;
+            }
         } else
         {
             if (audioSource.clip.name == warningTheme.name || audioSource.clip.name == warningThemeLoop.name)
@@ -56,7 +61,10 @@ public class movement : MonoBehaviour
                 playSound(mainTheme, true);
                 audioSource.volume = 1;
             }
-            navMeshAgent.destination = movePositionTransform[pathCounter].position;
+            if (!stopMovement)
+            {
+                navMeshAgent.destination = movePositionTransform[pathCounter].position;
+            }
         }
     }
 
@@ -69,7 +77,6 @@ public class movement : MonoBehaviour
                 break;
             }
             upsetTime += Time.deltaTime;
-            print(upsetTime);
             yield return null;
         }
         if (followingCharacter || followingCharacterForRoot)
