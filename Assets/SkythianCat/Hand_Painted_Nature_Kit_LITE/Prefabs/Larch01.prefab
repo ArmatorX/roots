@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 33730199074784402}
   - component: {fileID: 23429048093195576}
   - component: {fileID: 3659430404720099278}
+  - component: {fileID: -3237363381070194635}
   m_Layer: 0
   m_Name: Larch01
-  m_TagString: Untagged
+  m_TagString: sacred_tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,5 +97,19 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.89463866, y: 16.087543, z: 0.8321228}
-  m_Center: {x: 0.15370005, y: 7.4399815, z: 0.086223066}
+  m_Size: {x: 1.26, y: 16.087543, z: 0.8321228}
+  m_Center: {x: -0.05, y: 7.4399815, z: 0.086223066}
+--- !u!136 &-3237363381070194635
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977261233423868}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.05
+  m_Height: 18
+  m_Direction: 1
+  m_Center: {x: -0.093931675, y: 7.439981, z: 0.06397772}

@@ -9,6 +9,7 @@ TagManager:
   - chobi
   - axe
   - interact
+  - sacred_tree
   layers:
   - Default
   - TransparentFX

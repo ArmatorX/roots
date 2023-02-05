@@ -7,9 +7,11 @@ using UnityEngine.InputSystem;
 public class Interact : MonoBehaviour
 {
     public GameObject pressE;
+    public GameObject pressLeftClick;
     private GameObject axe;
     private StarterAssetsInputs _input;
     private bool hasGathered = false;
+    private bool haveAxe = false;
 
     private void Start()
     {
@@ -38,7 +40,7 @@ public class Interact : MonoBehaviour
         axe.SetActive(false);
         gameObject.GetComponent<ThirdPersonController>().ActivateAxe();
         hasGathered = false;
-
+        haveAxe = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -48,12 +50,20 @@ public class Interact : MonoBehaviour
             axe = other.gameObject;
             pressE.SetActive(true);
         }
+        if (other.tag == "sacred_tree" && haveAxe)
+        {
+            pressLeftClick.SetActive(true);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "axe")
         {
             pressE.SetActive(false);
+        }
+        if (other.tag == "sacred_tree")
+        {
+            pressLeftClick.SetActive(false);
         }
     }
 }
