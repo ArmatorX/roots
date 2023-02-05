@@ -247,7 +247,7 @@ namespace StarterAssets
             // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
-            float speedOffset = 0.1f;
+            float speedOffset = 0.3f;
             float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
 
             // accelerate or decelerate to target speed
@@ -292,6 +292,7 @@ namespace StarterAssets
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            if (_speed != 0) print(_speed);
 
             // update animator if using character
             if (_hasAnimator)
