@@ -7,23 +7,74 @@ public class movement : MonoBehaviour
 {
     [SerializeField] private Transform[] movePositionTransform;
     public Transform characterTransform;
+    public Transform chobiTransform;
     public int pathCounter = 0;
     private NavMeshAgent navMeshAgent;
     public bool followingCharacter = false;
+    public AudioClip mainTheme;
+    public AudioClip warningTheme;
+    public AudioClip warningThemeLoop;
+    public AudioSource audioSource;
     void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        chobiTransform = GetComponent<Transform>();
     }
 
     private void Update()
     {
+        if (Vector3.Distance(characterTransform.position, chobiTransform.position) < 50)
+        {
+            followingCharacter = true;
+        } else
+        {
+            followingCharacter = false;
+        }
         if (followingCharacter)
         {
+            if (mainTheme.name == audioSource.clip.name)
+            {
+                audioSource.volume = 0.2f;
+                playSound(warningTheme, false);
+                StartCoroutine(teleportChobi());
+            }
+            if (audioSource.clip.name == warningTheme.name && audioSource.isPlaying)
+            {
+                playSound(warningThemeLoop, true);
+            }
             navMeshAgent.destination = characterTransform.position;
         } else
         {
+            if (audioSource.clip.name == warningTheme.name || audioSource.clip.name == warningThemeLoop.name)
+            {
+                playSound(mainTheme, true);
+                audioSource.volume = 1;
+            }
             navMeshAgent.destination = movePositionTransform[pathCounter].position;
         }
+    }
+
+    IEnumerator teleportChobi()
+    {
+        yield return new WaitForSeconds(25);
+        if (followingCharacter)
+        {
+            followingCharacter = false;
+            foreach (Transform pathPosition in movePositionTransform)
+            {
+                if (Vector3.Distance(pathPosition.position, characterTransform.position) > 50)
+                {
+                    chobiTransform.position = pathPosition.position;
+                }
+            }
+        }
+    }
+    private void playSound(AudioClip clip, bool loop)
+    {
+        audioSource.Stop();
+        audioSource.clip = clip;
+        audioSource.loop = loop;
+        audioSource.Play();
     }
 
     private void OnTriggerEnter(Collider other)
