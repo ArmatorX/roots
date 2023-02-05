@@ -129,3 +129,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseStrength: 0.25
   objectHeight: 1
+  chobi: {fileID: 6750455518714187842, guid: c77207b6c3b547343a482492c7859195, type: 3}
