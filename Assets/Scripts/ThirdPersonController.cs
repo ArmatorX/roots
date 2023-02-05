@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -256,7 +257,11 @@ namespace StarterAssets
             // check if attacking
             bool isAttacking = _animator.GetCurrentAnimatorStateInfo(0).IsName("UseAxe");
 
-            if (Tired || isAttacking) targetSpeed = 0;
+            // check if gathering
+            bool isGathering = _animator.GetCurrentAnimatorStateInfo(0).IsName("Gathering");
+
+
+            if (Tired || isAttacking || isGathering) targetSpeed = 0;
 
             // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -289,7 +294,7 @@ namespace StarterAssets
 
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
-            if (_input.move != Vector2.zero && !Tired && !isAttacking)
+            if (_input.move != Vector2.zero && !Tired && !isAttacking && !isGathering)
             {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                                   _mainCamera.transform.eulerAngles.y;
