@@ -38,6 +38,7 @@ public class Root : MonoBehaviour
         if (_wasTriggered) return;
         if (other.tag == "Player")
         {
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BackgroundSounds>().playRootClip();
             _wasTriggered = true;
             StartCoroutine(Dissolve());
         }
@@ -61,6 +62,7 @@ public class Root : MonoBehaviour
             else yield return null;
         }
         GameObject.FindGameObjectWithTag("chobi").GetComponent<movement>().followingCharacterForRoot = true;
+        GameObject.FindGameObjectWithTag("chobi").GetComponent<movement>().upsetTime = 0f;
         Destroy(gameObject);
     }
 

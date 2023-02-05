@@ -17,6 +17,7 @@ public class movement : MonoBehaviour
     public AudioClip warningTheme;
     public AudioClip warningThemeLoop;
     public AudioSource audioSource;
+    public float upsetTime = 0f;
     void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -38,6 +39,7 @@ public class movement : MonoBehaviour
         {
             if (mainTheme.name == audioSource.clip.name)
             {
+                upsetTime = 0f;
                 audioSource.volume = 0.2f;
                 playSound(warningTheme, false);
                 StartCoroutine(teleportChobi());
@@ -60,7 +62,16 @@ public class movement : MonoBehaviour
 
     IEnumerator teleportChobi()
     {
-        yield return new WaitForSeconds(25);
+        while (upsetTime <= 25f)
+        {
+            if (!followingCharacter && !followingCharacterForRoot)
+            {
+                break;
+            }
+            upsetTime += Time.deltaTime;
+            print(upsetTime);
+            yield return null;
+        }
         if (followingCharacter || followingCharacterForRoot)
         {
             followingCharacter = false;

@@ -11,13 +11,12 @@ public class Interact : MonoBehaviour
     private GameObject axe;
     private StarterAssetsInputs _input;
     private bool hasGathered = false;
-    private bool haveAxe = true;
+    private bool haveAxe = false;
     private bool gameOver = false;
 
     private void Start()
     {
         _input = GetComponent<StarterAssetsInputs>();
-        gameObject.GetComponent<ThirdPersonController>().ActivateAxe();
     }
     private void Update()
     {
