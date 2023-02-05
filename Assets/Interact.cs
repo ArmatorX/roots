@@ -36,6 +36,7 @@ public class Interact : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         axe.SetActive(false);
+        gameObject.GetComponent<ThirdPersonController>().ActivateAxe();
         hasGathered = false;
 
     }

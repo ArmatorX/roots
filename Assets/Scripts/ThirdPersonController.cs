@@ -19,6 +19,10 @@ namespace StarterAssets
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
 
+        [Header("Axe Object")]
+        [Tooltip("Axe GameObject")]
+        public GameObject AxeGameObject;
+
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
 
@@ -185,6 +189,11 @@ namespace StarterAssets
         public void Gather()
         {
             _animator.SetBool(_animIDGather, _input.interact);
+        }
+
+        public void ActivateAxe()
+        {
+            AxeGameObject.SetActive(true);
         }
 
         private void LateUpdate()
